@@ -4,7 +4,7 @@ from database import Base, engine, SessionLocal
 from sqlalchemy.orm import Session
 from models import Query, Jira
 from schemas import QuerySchema
-from func import jiraPost, jiraDelete, jiraEdit
+from jira import jiraPost, jiraDelete, jiraEdit, jiraGet
 import sqlalchemy as database
 
 Base.metadata.create_all(bind=engine)
@@ -18,9 +18,11 @@ def get_db():
     finally:
         db.close
 
+
 @app.get("/query/all")
 async def allQueries(db: Session = Depends(get_db)):
     return db.query(Query).all()
+
 
 @app.get("/query/{query_id}")
 async def getQuery(query_id: int, db: Session = Depends(get_db)):
@@ -28,6 +30,7 @@ async def getQuery(query_id: int, db: Session = Depends(get_db)):
     curr_query = db.query(Query).filter(Query.id == query_id).first()
     
     return curr_query
+
 
 @app.post("/query")
 async def addQuery(input_query: QuerySchema, db: Session = Depends(get_db)):
@@ -62,6 +65,7 @@ async def addQuery(input_query: QuerySchema, db: Session = Depends(get_db)):
 
     return data
     
+
 @app.put("/query/{query_id}")
 async def editQuery(query_id: int, input_query: QuerySchema, db: Session = Depends(get_db)):
 
@@ -98,6 +102,7 @@ async def editQuery(query_id: int, input_query: QuerySchema, db: Session = Depen
     return input_query
 
 
+
 @app.delete("/query/{query_id}")
 async def deleteQuery(query_id: int, db: Session = Depends(get_db)):
 
@@ -118,3 +123,4 @@ async def deleteQuery(query_id: int, db: Session = Depends(get_db)):
     db.query(Jira).filter(Jira.id == query_id).delete()
 
     db.commit()            
+

@@ -41,7 +41,7 @@ def jiraPost(title: str, query: str):
             }
         }
     })
-    response = requests.post(url, headers = headers, data = payload, auth = ("soham.chaudhuri@groww.in", "t5IObDC33qSKE2kvZ4xp15C0"))
+    response = requests.post(url, headers = headers, data = payload, auth = ("soham.chaudhuri@groww.in", "ZCqvi8HuFk8NkKbPXzK65B71"))
     data = response.json()
     return data
 
@@ -86,11 +86,18 @@ def jiraEdit(key: str, title: str, query: str):
             }
         }
     })
-    response = requests.put(url, headers = headers, data = payload, auth = ("soham.chaudhuri@groww.in", "t5IObDC33qSKE2kvZ4xp15C0"))
+    response = requests.put(url, headers = headers, data = payload, auth = ("soham.chaudhuri@groww.in", "ZCqvi8HuFk8NkKbPXzK65B71"))
     return response.text
 
 
 def jiraDelete(key: str):
     url = f"https://growwdevs.atlassian.net/rest/api/2/issue/{key}" 
-    response = requests.delete(url, auth = ("soham.chaudhuri@groww.in", "t5IObDC33qSKE2kvZ4xp15C0"))
+    response = requests.delete(url, auth = ("soham.chaudhuri@groww.in", "ZCqvi8HuFk8NkKbPXzK65B71"))
     return response.text
+
+
+def jiraGet(key: str):
+    url = f"https://growwdevs.atlassian.net/rest/api/3/issue/{key}"
+    response = requests.get(url, auth = ("soham.chaudhuri@groww.in", "ZCqvi8HuFk8NkKbPXzK65B71"))
+    return response.json()
+    
