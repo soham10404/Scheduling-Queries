@@ -15,7 +15,7 @@ class Query(Base):
     __tablename__ = "Query"
     id = Column(Integer, primary_key = True, index = True)
     # user_id = Column(String(100));
-    query = Column(String(8000))
+    query = Column(String(11000))
     repeats = Column(String(250))
     repeats_instance = Column(String(100))
     title = Column(String(250))
@@ -27,10 +27,17 @@ class Query(Base):
     partitioning_field = Column(String(250))
     write_preference = Column(Enum(Write_pref))
     location = Column(String(250))
-    notify_via_mail = Column(Boolean, default=False)
+    notify_via_mail = Column(Boolean, default = False)
+    # is_scheduled = Column(Boolean, default = False)
 
 class Jira(Base):
     __tablename__ =  "Jira"
     key = Column(String(100))
     id = Column(Integer, index = True, primary_key = True)
     status = Column(Enum(Query_Status))
+
+class Bigquery(Base):
+    __tablename__ = "Bigquery"
+    key = Column(String(250))
+    config_name = Column(String(250))
+    

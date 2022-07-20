@@ -122,5 +122,24 @@ async def deleteQuery(query_id: int, db: Session = Depends(get_db)):
     db.query(Query).filter(Query.id == query_id).delete()
     db.query(Jira).filter(Jira.id == query_id).delete()
 
-    db.commit()            
+    db.commit()          
 
+
+@app.post("/webhook")
+async def webhook(req: dict, db: Session = Depends(get_db)):
+
+    updated_status = req['issue']['fields']['status']['name']
+    issue_key = req['issue']['key'] 
+    
+    curr_jira = db.query(Jira).filter(Jira.key == issue_key).first()
+    curr_jira.status = updated_status
+
+    if(updated_status == "Approved"):
+        print("Scheduling Queries...")
+    else:
+        print("Query Declined...")
+
+    db.add(curr_jira)
+    db.commit()
+
+    return {"status": "Success"}
